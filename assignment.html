@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Two Way Data Binding Assignment</title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body ng-app="myApp">
+<div>
+    <div ng-controller="myCtrl">
+        <p>First Name: <span ng-bind="firstName"></span></p>
+        <p>Last Name: <span ng-bind="lastName"></span></p>
+        <p>Full Name: <span ng-bind="fullName()"></span></p>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp',[]);
+    app.controller('myCtrl',function($scope){
+
+    $scope.firstName = 'Anand';
+    $scope.lastName = 'Surname';
+
+    $scope.fullName = function(){
+    return $scope.firstName + ' ' + $scope.lastName;
+    };
+
+    });
+</script>
+</body>
+</html>

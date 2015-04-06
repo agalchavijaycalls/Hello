@@ -1,0 +1,33 @@
+<html>
+<head>
+    <title>
+       Example of two way data binding with angular Js
+    </title>
+    <script src="scripts/angular.js"></script>
+</head>
+
+<body ng-app="myApp">
+<div ng-controller="myCtrl">
+    <label>Name: </label>
+    <input type="text" form-control ng-model="name" placeholder="Enter Name">
+    <button type="button" ng-click="addName()">Add</button>
+
+    <h1>List</h1>
+    <ol>
+        <li ng-repeat="n in names">{{n}}</li>
+    </ol>
+</div>
+
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope){
+       $scope.addName = function(){
+         $scope.names.push($scope.name);
+       };
+
+        $scope.names = ['Name 1', 'Name 2'];
+    });
+</script>
+</body>
+</html>
