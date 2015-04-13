@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> Services / Factory</title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body>
+<h3>This example explains that Two different controller and view also but sing service which used by both controller.</h3>
+<div ng-app="myApp">
+    <div ng-controller="list1Controller">
+        <h2>List 1</h2>
+        <input type="text" ng-model="name">
+        <button type="button" ng-click="addName()">-Add Name-</button>
+        <ul>
+            <li ng-repeat="x in names">{{x}}</li>
+        </ul>
+    </div>
+
+    <div ng-controller="list2Controller">
+        <h2>List 1</h2>
+        <input type="text" ng-model="name">
+        <button type="button" ng-click="addName()">-Add Name-</button>
+        <ul>
+            <li ng-repeat="x in names">{{x}}</li>
+        </ul>
+    </div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+
+    app.factory('myService', [ function(){
+        var obj = {};
+        obj = {
+            items:['Name 1', 'Name 2'],
+            addName: function(name){
+                this.items.push(name);
+            }
+        };
+        return(obj);
+    }]);
+
+    app.controller('list1Controller', ['$scope', 'myService', function($scope, myService){
+        $scope.addName = function(){
+            myService.addName($scope.name);
+        }
+        $scope.names = myService.items;
+    }]);
+
+    app.controller('list2Controller', ['$scope', 'myService', function($scope, myService){
+        $scope.addName = function(){
+            myService.addName($scope.name);
+        }
+        $scope.names = myService.items;
+    }]);
+</script>
+</body>
+</html>

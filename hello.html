@@ -4,18 +4,22 @@
        Example of two way data binding with angular Js
     </title>
     <script src="scripts/angular.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 
-<body ng-app="myApp">
+<body ng-app="myApp" class="container">
+
 <div ng-controller="myCtrl">
+    <form calss="form-inline" role="form">
     <label>Name: </label>
-    <input type="text" form-control ng-model="name" placeholder="Enter Name">
-    <button type="button" ng-click="addName()">Add</button>
+    <input type="text" class="form-control" ng-model="name" placeholder="Enter Name">
+    <button type="button" ng-click="addName()" class="btn btn-info">Add</button>
 
     <h1>List</h1>
     <ol>
         <li ng-repeat="n in names">{{n}}</li>
     </ol>
+    </form>
 </div>
 
 

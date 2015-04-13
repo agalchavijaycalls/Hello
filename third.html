@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>single controller multiple view</title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body>
+    <div ng-app="myApp">
+        <div ng-controller="myController">
+
+            <h2> This is an example of Single controller but two views (i.e. List 1 and List2). <br>But you can observe that,
+                When you add a Name it updates only one List not a both. <br>
+                Controller not interact with other View (i.e. List 1 or List 2)
+            </h2>
+        <input type="text" ng-model="name" id="txtName" >
+        <button type="button" ng-click="addName()">-Add-</button>
+
+        <h3>List 1</h3>
+        <ul>
+            <li ng-repeat="name in names">{{name}}</li>
+        </ul>
+        </div>
+
+        <div ng-controller="myController">
+            <input type="text" ng-model="name" id="txtName" >
+            <button type="button" ng-click="addName()">-Add-</button>
+
+            <h3>List 2</h3>
+            <ul>
+                <li ng-repeat="name in names">{{name}}</li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        var app = angular.module('myApp', []);
+
+        app.controller('myController', function($scope){
+            $scope.names = [
+              'Name 1',
+              'Name 2'
+            ];
+            $scope.addName = function(){
+                $scope.names.push($scope.name);
+                //$('txtName').value('');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> Example of Service or Factory</title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body>
+<h3> Example of Service </h3>
+<h2> This is an example of Single controller, Single Service but two views (i.e. List 1 and List2). <br>Here you can observe that,
+    When you add a Name in any list then it updates both List <br>Because of single Service which updates the list (i.e. both List 1 and List 2)<br>
+
+</h2>
+<div ng-app="listApp">
+    <h2>List 1</h2>
+    <div ng-controller="listController">
+        <input type="text" ng-model="name" placeholder="Enter the Name">
+        <button type="button" ng-click="addName()" > - Add - </button>
+
+        <ul>
+            <li ng-repeat="x in names">{{x}}</li>
+        </ul>
+    </div>
+
+    <h2>List 2</h2>
+    <div ng-controller="listController">
+        <input type="text" ng-model="name" placeholder="Enter the Name">
+        <button type="button" ng-click="addName()" > - Add - </button>
+
+        <ul>
+            <li ng-repeat="x in names">{{x}}</li>
+        </ul>
+    </div>
+</div>
+<script>
+    var app = angular.module('listApp', []);
+
+    app.factory('myService', [ function(){
+        var f = {};
+        f = {
+            items: [
+                'Name 1',
+                'Name 2'
+            ],
+            addName: function(name){
+                this.items.unshift(name);
+            }
+            };
+        return (f);
+    }]);
+
+    app.controller('listController', [ '$scope', 'myService', function($scope, myService){
+
+        $scope.addName = function(){
+            myService.addName($scope.name);
+        }
+        $scope.names = myService.items;
+    }]);
+</script>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title> Simple Controller in 3 different ways</title>
+    <script src="scripts/angular.js"></script>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+</head>
+<body data-ng-app="myApp">
+<div class="container">
+
+        <!-- Place holders for the Views -->
+      <div data-ng-view=""></div>
+
+</div>
+<script>
+    var app = angular.module('myApp', []);
+
+    app.config(function($routeProvider){
+        $routeProvider
+                .when('/view1',
+                {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/View1.html'
+                })
+                .when('/view2',
+                {
+                    controller: 'SimpleController',
+                    templateUrl: 'Partials/View2.html'
+                })
+                .otherwise({redirectTo: '/view1'});
+    });
+
+    app.controller('SimpleController', function($scope){
+        $scope.customers = [
+            {   Name: 'Anand', City: 'Pune' },
+            {   Name: 'Jhon', City: 'Doe' },
+            {   Name: 'Jane', City: 'Doe' },
+            {   Name: 'Anna', City: 'Chennai' }
+        ];
+        $scope.addCustomer = function(){
+            $scope.customers.push({Name: $scope.newCustomer.name, City: $scope.newCustomer.city});
+        }
+    });
+
+</script>
+</body>
+</html>

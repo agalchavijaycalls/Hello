@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Angular JS - Controller - Service - Filter</title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body ng-app="myApp">
+<div ng-controller="myCtrl">
+    <input type="text" ng-model="name" placeholder="Enter name">
+    <button ng-click="addName()">Add</button> {{test}}
+    <h1>Filtered list</h1>
+    <ol>
+        <li ng-repeat="n in names | myFilter">{{n}}</li>
+    </ol>
+
+    <h1>Unfiltered List</h1>
+    <!-- <my-list></my-list>
+    OR
+    -->
+    <div my-list></div>
+    <!--<ol>
+        <li ng-repeat="n in names">{{n | capFilter}}</li>
+    </ol>-->
+
+    <h1>List with directives - Isolate</h1>
+    <ol>
+        <li ng-repeat="n in names">
+            <my-element info="n"></my-element>
+        </li>
+    </ol>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.factory("myService", [function () {
+        return({
+            items: [],
+            addName: function(name) {
+                this.items.push(name);
+            }
+        })
+    }]);
+    app.controller('myCtrl', ['$scope', '$filter','myService', function($scope, $filter, myService) {
+        $scope.addName = function() {
+            myService.addName($scope.name);
+            $scope.name = '';
+        };
+        $scope.names = myService.items;
+        $scope.test = $filter('capFilter') ('abc');
+    }]);
+
+    app.filter('myFilter', [function () {
+        return function(items) {
+            var filtered = [];
+            for (var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if(item.search(/day/) != -1) {
+                    filtered.push(item);
+                }
+            }
+            return filtered;
+        }
+    }]);
+
+    app.filter('capFilter', function(){
+        return function (text){
+            return text.toString().toUpperCase();
+        }
+    });
+
+    app.directive('myList', function(){
+        return {
+            templateURL: 'myTemplate.html'
+        };
+    });
+
+    app.directive('myElement', function(){
+        return {
+            scope: {
+                text: '=info'
+            },
+            template: '<span>Item - {{text}} </span>'
+        };
+    });
+</script>
+</body>
+</html>

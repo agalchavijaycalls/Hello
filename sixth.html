@@ -1,0 +1,90 @@
+<html>
+<head>
+    <title>
+        Example of two way data binding with angular Js
+    </title>
+    <script src="scripts/angular.js"></script>
+</head>
+
+<body ng-app="myApp">
+<div ng-controller="myCtrl">
+    <label>Name: </label>
+    <input type="text" form-control ng-model="name" placeholder="Enter Name">
+    <button type="button" ng-click="addName()">Add</button>
+
+    <h1>List 1</h1>
+    <ol>
+        <li ng-repeat="n in names">{{n}}</li>
+    </ol>
+</div>
+
+<div ng-controller="myCtrl1">
+    <label>Name: </label>
+    <input type="text" form-control ng-model="name" placeholder="Enter Name">
+    <button type="button" ng-click="addName()">Add</button>
+
+    <h1>List 2</h1>
+    <ol>
+        <li ng-repeat="n in names">{{n}}</li>
+    </ol>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+
+    app.factory("myService", [function() {
+
+        return({
+            items: [
+                'Name 1',
+                'Name 2'
+            ],
+            addName: function(name){
+                this.items.unshift(name);
+            }
+        })
+    }]);
+
+    app.factory("myService1", [function() {
+
+        return({
+            items: [
+                'Name 1',
+                'Name 2'
+            ],
+            addName: function(name){
+                this.items.push(name);
+            }
+        })
+    }]);
+
+    app.controller('myCtrl', ['$scope', 'myService', function($scope, myService){
+
+        $scope.addName = function(){
+            myService.addName($scope.name);
+            $scope.name='';
+        };
+
+        $scope.names = myService.items;
+    }]);
+
+    app.controller('myCtrl1', ['$scope', 'myService1', function($scope, myService1){
+
+        $scope.addName = function(){
+            myService1.addName($scope.name);
+            $scope.name='';
+        };
+
+        $scope.names = myService1.items;
+    }]);
+    /*app.controller('myCtrl', function($scope){
+     $scope.addName = function(){
+     $scope
+     $scope.names.push($scope.name);
+     };
+
+     $scope.names = ['Name 1', 'Name 2'];
+     });*/
+</script>
+</body>
+</html>
