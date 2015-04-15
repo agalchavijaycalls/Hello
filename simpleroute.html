@@ -4,31 +4,36 @@
     <meta charset="UTF-8">
     <title> Simple Controller in 3 different ways</title>
     <script src="scripts/angular.js"></script>
+    <script src="scripts/angular-ui-router.js"></script>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 </head>
 <body data-ng-app="myApp">
-<div class="container">
-
+<div class="container" ng-controller="SimpleController">
+    <a ui-sref="view1">View 1</a> |
+    <a ui-sref="view2">View 2</a>
         <!-- Place holders for the Views -->
-      <div data-ng-view=""></div>
+      <div ui-view=""></div>
 
 </div>
 <script>
-    var app = angular.module('myApp', []);
+    var app = angular.module('myApp', ['ui.router']);
 
-    app.config(function($routeProvider){
-        $routeProvider
-                .when('/view1',
+    app.config(function($stateProvider, $urlRouterProvider){
+        $urlRouterProvider.otherwise("/view1");
+
+        $stateProvider
+                .state("view1",
                 {
+                    url: '/view1',
                     controller: 'SimpleController',
                     templateUrl: 'Partials/View1.html'
                 })
-                .when('/view2',
+                .state("view2",
                 {
+                    url: '/view2',
                     controller: 'SimpleController',
                     templateUrl: 'Partials/View2.html'
                 })
-                .otherwise({redirectTo: '/view1'});
     });
 
     app.controller('SimpleController', function($scope){

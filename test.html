@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="scripts/angular.js"></script>
+</head>
+<body>
+<div ng-app="myApp">
+    <div ng-controller="myCtrl">
+        Name: <input type="text" ng-model="name">
+        <button type="button" ng-click="addName()">Add</button>
+
+        <h3> Filtered List</h3>
+        <ol>
+            <li ng-repeat="n in names | myFilter track by $index"> {{n}}</li>
+        </ol>
+        <h3>List</h3>
+        <ol>
+            <li ng-repeat="n in names track by $index" ng-bind="n"></li>
+        </ol>
+        <h3>Un filtered List using custome directives</h3>
+        <div my-list=""></div>
+
+        <h3> List with Directives - Isolate</h3>
+        <li ng-repeat="n in names track by $index">
+            <my-element info="n"></my-element>
+        </li>
+    </div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+
+    app.service('myService', [function(){
+        var f = {};
+        f= {
+            items: ['Name 1', 'Name 2'],
+            addName: function(name){
+                this.items.push(name);
+            }
+        };
+
+        return f;
+
+    }]);
+
+    app.controller('myCtrl', [ '$scope', 'myService', function($scope, myService){
+        $scope.addName = function(){
+            myService.addName($scope.name);
+            $scope.name = '';
+        }
+        $scope.names = myService.items;
+    }]);
+
+    app.filter('myFilter', function(){
+        return function(items){
+            var filteredItems = [];
+            for(i=0; i<items.length; i++){
+                if( (items[i].search(/day/) != -1) || (items[i].search(/DAY/) != -1)){
+                    filteredItems.push(items[i]);
+                }
+            }
+            return filteredItems;
+        }
+    });
+
+    app.directive('myList', function(){
+       return {
+         template: ' <ol> <li ng-repeat="n in names track by $index" ng-bind="n"></li> </ol>'
+       };
+    });
+
+    app.directive('myElement', function(){
+       return {
+         scope: {
+             text: '=info'
+         },
+         template: '<span>Items - {{text}} </span>'
+       };
+    });
+
+</script>
+</body>
+</html>
